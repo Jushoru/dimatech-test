@@ -1,1 +1,0 @@
-import{_ as a,a as r,d as n,u as t,h as u,o as l}from"./index-Di0n6u_I.js";const p={__name:"navMenu",setup(_){const s=u();return(c,e)=>(l(),r("nav",null,[n("ul",null,[n("li",{onClick:e[0]||(e[0]=o=>t(s).push("/"))}," Задание 1 "),n("li",{onClick:e[1]||(e[1]=o=>t(s).push("/task2Page"))}," Задание 2 ")])]))}},v=a(p,[["__scopeId","data-v-878e3ee2"]]);export{v as N};
