@@ -1,0 +1,1 @@
+import{N as a}from"./navMenu-DdYFOuGE.js";import{a as t,b as r,g as o,F as s,o as n}from"./index-MnC6sV_c.js";const u={__name:"task2Page",setup(m){return(p,e)=>(n(),t(s,null,[r(a),e[0]||(e[0]=o(" Страница 2 "))],64))}};export{u as default};
