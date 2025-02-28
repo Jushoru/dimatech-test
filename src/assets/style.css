@@ -112,4 +112,25 @@ legend {
 
 :root {
     --font-family-base: 'Inter Regular', sans-serif;
+
+    .vc-colorpicker {
+        box-shadow: none !important;
+    }
+
+    .vc-colorpicker {
+        width: 100% !important;
+    }
+
+    .vc-compact {
+        display: flex !important;
+        flex-direction: column !important;
+        box-shadow: none !important;
+    }
+
+    .vc-compact__row {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+    }
+
 }

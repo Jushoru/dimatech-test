@@ -1,18 +1,29 @@
 <script setup>
 import { ref } from "vue";
+import { ColorPicker } from "vue3-colorpicker";
+import "vue3-colorpicker/style.css";
+
 
 const props = defineProps({
   dialog: Object,
 });
 
+const pureColor = ref("red");
+const gradientColor = ref("linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 100%)");
+
 const name = ref('')
 const value = ref('')
+
+function onSubmit() {
+  console.log(name.value, value.value, pureColor.value)
+  props.dialog.close()
+}
 </script>
 
 <template>
   <div class="form_wrapper">
     <h3>Добавление сектора</h3>
-    <form>
+    <form @submit.prevent="onSubmit">
       <div class="form_name_wrapper">
         <label class="form_name">
           Наименование
@@ -31,7 +42,13 @@ const value = ref('')
                type="text"
         />
       </div>
-      <button @open="props.dialog.close()">
+      <div class="color_picker_wrapper">
+        <color-picker is-widget disable-history
+                      v-model:pureColor="pureColor"
+                      v-model:gradientColor="gradientColor"
+        />
+      </div>
+      <button @click="">
         Добавить сектор
       </button>
     </form>
@@ -98,4 +115,5 @@ button {
 .form_name_input {
   position: relative;
 }
+
 </style>
