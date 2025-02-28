@@ -8,10 +8,10 @@ const router = useRouter();
   <nav>
     <ul>
       <li @click="router.push('/')">
-        Задание 1
+        <button>Задание 1</button>
       </li>
       <li @click="router.push('/task2Page')">
-        Задание 2
+        <button>Задание 2</button>
       </li>
     </ul>
   </nav>
@@ -25,22 +25,30 @@ ul {
   flex-direction: row;
 }
 
-
 li {
   width: 8rem;
   display: flex;
   justify-content: center;
-  background: aquamarine;
-  color: black;
-  padding: 10px 20px;
-  border: 2px solid #52A388;
-  border-radius: 5px;
-  cursor: pointer;
 }
+
+button {
+  width: 100%;
+  background-color: #1B84FF;
+  border-radius: 10px;
+  height: 45px;
+  margin-top: 30px;
+
+  font-family: var(--font-family-base);
+  font-size: 16px;
+  color: white;
+  line-height: 24px;
+}
+
+button:hover {
+  background-color: #0469db;
+}
+
 li:nth-child(2) {
   margin-left: 10px;
-}
-li:hover {
-  background: #55eeba;
 }
 </style>

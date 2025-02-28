@@ -86,3 +86,22 @@ label {
 legend {
     display: block;
 }
+
+@font-face {
+    font-family: "Iter Regular";
+    src: url("../../public/fonts/Inter-Regular.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Inter SemiBold";
+    src: url("../../public/fonts/Inter-SemiBold.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+}
+
+:root {
+    --font-family-base: 'Inter Regular', sans-serif;
+}
