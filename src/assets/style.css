@@ -95,12 +95,20 @@ legend {
     font-display: swap;
 }
 @font-face {
+    font-family: "Inter Medium";
+    src: url("../../public/fonts/Inter-Medium.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+}
+@font-face {
     font-family: "Inter SemiBold";
     src: url("../../public/fonts/Inter-SemiBold.woff2") format("woff2");
     font-style: normal;
     font-weight: 600;
     font-display: swap;
 }
+
 
 :root {
     --font-family-base: 'Inter Regular', sans-serif;

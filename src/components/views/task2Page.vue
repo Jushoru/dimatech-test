@@ -1,5 +1,11 @@
 <script setup>
 import NavMenu from "../app/navMenu.vue";
+import DialogLayout from "../layouts/dialogLayout.vue";
+import FormLayout from "../layouts/formLayout.vue";
+import {ref} from "vue";
+
+const dialogTarget = ref()
+const showDialog = () => dialogTarget.value.show()
 
 const elements = [
   {
@@ -42,12 +48,15 @@ const elements = [
             </div>
           </li>
         </ul>
-        <button>
+        <button @click="showDialog">
           Добавить сектор
         </button>
       </div>
       <canvas style="margin-left: 89px; width: 500px" id="myChart"></canvas>
     </div>
+    <DialogLayout ref="dialogTarget">
+      <FormLayout :dialog="dialogTarget" />
+    </DialogLayout>
   </div>
 </template>
 
