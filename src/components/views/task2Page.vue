@@ -1,70 +1,63 @@
 <script setup>
-import NavMenu from "../app/navMenu.vue";
-import DialogLayout from "../layouts/dialogLayout.vue";
-import FormLayout from "../layouts/formLayout.vue";
-import { ref, onMounted } from "vue";
-import { useChartStore } from "../stores/chartStore.js";
-import { Chart, PieController, ArcElement, Tooltip, Legend } from 'chart.js';
-
-Chart.register(PieController, ArcElement, Tooltip, Legend);
+import { ref, computed } from 'vue';
+import { useChartStore } from '../stores/chartStore.js';
+import ChartLayout from "../layouts/chartLayout.vue";
+import NavMenu from '../app/navMenu.vue';
+import DialogLayout from '../layouts/dialogLayout.vue';
+import FormLayout from '../layouts/formLayout.vue';
 
 const chartStore = useChartStore();
 const dialogTarget = ref();
-const showDialog = () => dialogTarget.value.show();
 
+const showDialog = () => dialogTarget.value.show();
 
 function handleEdit(item) {
   chartStore.name = item.name;
-  chartStore.originalName = item.name
+  chartStore.originalName = item.name;
   chartStore.value = item.value;
   chartStore.pureColor = item.color;
-
   showDialog();
 }
-
 
 function handleDelete(itemName) {
   chartStore.elements = chartStore.elements.filter((item) => item.name !== itemName);
 }
 
-const data = {
+const chartData = computed(() => ({
   labels: chartStore.elements.map((item) => item.name),
-  datasets: [{
-    label: 'Данные',
-    data: chartStore.elements.map((item) => item.value),
-    backgroundColor: chartStore.elements.map((item) => item.color),
-    hoverOffset: 4,
-  }],
-};
+  datasets: [
+    {
+      label: 'Данные',
+      data: chartStore.elements.map((item) => item.value),
+      backgroundColor: chartStore.elements.map((item) => item.color),
+      hoverOffset: 4,
+    },
+  ],
+}));
 
-const config = {
-  type: 'pie',
-  data: data,
-  options: {
-    plugins: {
-      legend: {
-        position: 'bottom',
-        labels: {
-          usePointStyle: true,
-          pointStyle: 'circle',
-        }
+const chartOptions = ref({
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'bottom',
+      labels: {
+        usePointStyle: true,
+        pointStyle: 'circle',
       },
-    }
-  }
-};
-
-onMounted(() => {
-  const ctx = document.getElementById('myChart').getContext('2d');
-  new Chart(ctx, config);
+      padding: {
+        top: 40,
+      },
+    },
+  },
 });
 </script>
 
 <template>
-
   <div class="task2_wrapper">
     <div class="title">
       <h1>Круговая диаграмма</h1>
-      <nav-menu style="margin-left: 86px"/>
+      <nav-menu style="margin-left: 86px" />
     </div>
     <hr class="horizontal_hr" />
     <div class="chart_wrapper">
@@ -97,13 +90,14 @@ onMounted(() => {
         </ul>
         <button @click="showDialog">Добавить сектор</button>
       </div>
-      <canvas style="margin-left: 89px; max-width: 500px; max-height: 564px" id="myChart"></canvas>
+      <ChartLayout :chartData="chartData" :options="chartOptions" />
     </div>
     <DialogLayout ref="dialogTarget">
       <FormLayout :dialog="dialogTarget" />
     </DialogLayout>
   </div>
 </template>
+
 
 <style scoped>
 .task2_wrapper {

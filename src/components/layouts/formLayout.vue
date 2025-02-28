@@ -60,7 +60,6 @@ function onSubmit() {
       color: chartStore.pureColor
     });
   }
-
   chartStore.originalName = ''
   chartStore.name = ''
   chartStore.value = ''
