@@ -2,21 +2,57 @@
 import { ref } from "vue";
 import { ColorPicker } from "vue3-colorpicker";
 import "vue3-colorpicker/style.css";
+import { useChartStore } from "../stores/chartStore.js";
+import { toast } from "vue3-toastify";
+import 'vue3-toastify/dist/index.css';
 
-
+const chartStore = useChartStore();
 const props = defineProps({
   dialog: Object,
 });
 
-const pureColor = ref("red");
 const gradientColor = ref("linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 100%)");
 
-const name = ref('')
-const value = ref('')
-
 function onSubmit() {
-  console.log(name.value, value.value, pureColor.value)
-  props.dialog.close()
+  if (!chartStore.name || !chartStore.value || !chartStore.pureColor) {
+    toast("Все поля должны быть заполнены.", {
+      autoClose: 1000,
+      type: "error",
+      icon: false,
+    });
+    return;
+  }
+
+  let isUniq = chartStore.elements.every((chartItem) => {
+    return chartItem.name !== chartStore.name;
+  });
+
+  if (!isUniq) {
+    toast("Имя должно быть уникальным.", {
+      autoClose: 1000,
+      type: "error",
+      icon: false,
+    });
+    return;
+  }
+
+  let value = parseInt(chartStore.value, 10);
+  if (isNaN(value) || value < 0 || value > 100) {
+    toast("Значение должно быть целым числом от 0 до 100.", {
+      autoClose: 1000,
+      type: "error",
+      icon: false,
+    });
+    return;
+  }
+
+  chartStore.elements.push({
+    name: chartStore.name,
+    value: value,
+    color: chartStore.pureColor
+  });
+
+  props.dialog.close();
 }
 </script>
 
@@ -29,7 +65,7 @@ function onSubmit() {
           Наименование
         </label>
         <input class="form_name_input"
-               v-model="name"
+               v-model="chartStore.name"
                type="text"
         />
       </div>
@@ -38,17 +74,17 @@ function onSubmit() {
           Значение
         </label>
         <input class="form_name_input"
-               v-model="value"
+               v-model="chartStore.value"
                type="text"
         />
       </div>
       <div class="color_picker_wrapper">
         <color-picker is-widget disable-history
-                      v-model:pureColor="pureColor"
+                      v-model:pureColor="chartStore.pureColor"
                       v-model:gradientColor="gradientColor"
         />
       </div>
-      <button @click="">
+      <button type="submit">
         Добавить сектор
       </button>
     </form>

@@ -3,27 +3,13 @@ import NavMenu from "../app/navMenu.vue";
 import DialogLayout from "../layouts/dialogLayout.vue";
 import FormLayout from "../layouts/formLayout.vue";
 import {ref} from "vue";
+import { useChartStore } from "../stores/chartStore.js";
 
+const chartStore = useChartStore();
 const dialogTarget = ref()
 const showDialog = () => dialogTarget.value.show()
 
-const elements = [
-  {
-    name: "сектор-1",
-    value: 25,
-    color: '#FF6384',
-  },
-  {
-    name: "сектор-21",
-    value: 100,
-    color: '#FFCD56',
-  },
-  {
-    name: "сектор-21",
-    value: 25,
-    color: '#4BC0C0',
-  },
-]
+
 </script>
 
 <template>
@@ -34,7 +20,7 @@ const elements = [
     <div class="chart_wrapper">
       <div class="chart_info">
         <ul>
-          <li v-for="item in elements">
+          <li v-for="item in chartStore.elements">
             <div class="chart_item_parameters">
               <span class="pie_name">{{ item.name }}</span>
               <hr class="vertical_hr"/>
