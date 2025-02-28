@@ -20,7 +20,8 @@ const router = useRouter();
 <style scoped>
 ul {
   width: auto;
-  margin: 30px 10px;
+  margin-left: 10px;
+  margin-right: 10px;
   display: flex;
   flex-direction: row;
 }
@@ -36,7 +37,6 @@ button {
   background-color: #1B84FF;
   border-radius: 10px;
   height: 45px;
-  margin-top: 30px;
 
   font-family: var(--font-family-base);
   font-size: 16px;

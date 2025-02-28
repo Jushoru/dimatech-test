@@ -2,8 +2,11 @@
 import NavMenu from "../app/navMenu.vue";
 import DialogLayout from "../layouts/dialogLayout.vue";
 import FormLayout from "../layouts/formLayout.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useChartStore } from "../stores/chartStore.js";
+import { Chart, PieController, ArcElement, Tooltip, Legend } from 'chart.js';
+
+Chart.register(PieController, ArcElement, Tooltip, Legend);
 
 const chartStore = useChartStore();
 const dialogTarget = ref();
@@ -23,12 +26,46 @@ function handleEdit(item) {
 function handleDelete(itemName) {
   chartStore.elements = chartStore.elements.filter((item) => item.name !== itemName);
 }
+
+const data = {
+  labels: chartStore.elements.map((item) => item.name),
+  datasets: [{
+    label: 'Данные',
+    data: chartStore.elements.map((item) => item.value),
+    backgroundColor: chartStore.elements.map((item) => item.color),
+    hoverOffset: 4,
+  }],
+};
+
+const config = {
+  type: 'pie',
+  data: data,
+  options: {
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          usePointStyle: true,
+          pointStyle: 'circle',
+        }
+      },
+    }
+  }
+};
+
+onMounted(() => {
+  const ctx = document.getElementById('myChart').getContext('2d');
+  new Chart(ctx, config);
+});
 </script>
 
 <template>
-  <nav-menu />
+
   <div class="task2_wrapper">
-    <h1>Круговая диаграмма</h1>
+    <div class="title">
+      <h1>Круговая диаграмма</h1>
+      <nav-menu style="margin-left: 86px"/>
+    </div>
     <hr class="horizontal_hr" />
     <div class="chart_wrapper">
       <div class="chart_info">
@@ -42,14 +79,12 @@ function handleDelete(itemName) {
               <div class="circle" :style="{ backgroundColor: item.color }" />
             </div>
             <div class="chart_item_functions">
-              <!-- Добавляем обработчик клика для иконки "Edit" -->
               <img
                   src="../../assets/icons/Edit.svg"
                   alt="edit"
                   class="img_edit"
                   @click="handleEdit(item)"
               />
-              <!-- Добавляем обработчик клика для иконки "Delete" -->
               <img
                   src="../../assets/icons/Trash.svg"
                   alt="delete"
@@ -62,7 +97,7 @@ function handleDelete(itemName) {
         </ul>
         <button @click="showDialog">Добавить сектор</button>
       </div>
-      <canvas style="margin-left: 89px; width: 500px" id="myChart"></canvas>
+      <canvas style="margin-left: 89px; max-width: 500px; max-height: 564px" id="myChart"></canvas>
     </div>
     <DialogLayout ref="dialogTarget">
       <FormLayout :dialog="dialogTarget" />
@@ -75,7 +110,12 @@ function handleDelete(itemName) {
   display: flex;
   flex-direction: column;
   align-items: start;
-  margin-top: 30px;
+  margin-top: 10px;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
 }
 
 h1 {
@@ -88,7 +128,8 @@ h1 {
 .horizontal_hr {
   border-bottom: 1px solid #DBDFE9;
   margin-top: 30px;
-  width: 100%
+  width: 100%;
+  margin-bottom: 40px;
 }
 
 .pie_name {
@@ -144,7 +185,6 @@ h1 {
 }
 
 ul {
-  margin-top: 40px;
   font-family: var(--font-family-base);
   font-size: 16px;
   color: #252F4A;

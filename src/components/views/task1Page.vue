@@ -26,11 +26,7 @@ const interval = setInterval(() => {
 </script>
 
 <template>
-  <nav-menu/>
-  <ProgressBarSvg :status="status" :state="state" :dashboard="false"/>
-  <ProgressBarSvg :status="status" :state="state" :dashboard="true"/>
+  <nav-menu style="margin-top: 10px"/>
+  <ProgressBarSvg :status="status" :state="state" :dashboard="false" style="margin-top: 30px"/>
+  <ProgressBarSvg :status="status" :state="state" :dashboard="true" style="margin-top: 30px"/>
 </template>
-
-<style scoped>
-
-</style>
