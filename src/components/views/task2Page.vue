@@ -2,41 +2,65 @@
 import NavMenu from "../app/navMenu.vue";
 import DialogLayout from "../layouts/dialogLayout.vue";
 import FormLayout from "../layouts/formLayout.vue";
-import {ref} from "vue";
+import { ref } from "vue";
 import { useChartStore } from "../stores/chartStore.js";
 
 const chartStore = useChartStore();
-const dialogTarget = ref()
-const showDialog = () => dialogTarget.value.show()
+const dialogTarget = ref();
+const showDialog = () => dialogTarget.value.show();
 
 
+function handleEdit(item) {
+  chartStore.name = item.name;
+  chartStore.originalName = item.name
+  chartStore.value = item.value;
+  chartStore.pureColor = item.color;
+
+  showDialog();
+}
+
+
+function handleDelete(itemName) {
+  chartStore.elements = chartStore.elements.filter((item) => item.name !== itemName);
+}
 </script>
 
 <template>
-  <nav-menu/>
+  <nav-menu />
   <div class="task2_wrapper">
     <h1>Круговая диаграмма</h1>
-    <hr class="horizontal_hr"/>
+    <hr class="horizontal_hr" />
     <div class="chart_wrapper">
       <div class="chart_info">
         <ul>
-          <li v-for="item in chartStore.elements">
+          <li v-for="item in chartStore.elements" :key="item.name">
             <div class="chart_item_parameters">
               <span class="pie_name">{{ item.name }}</span>
-              <hr class="vertical_hr"/>
-              <span class="pie_value">{{ item.value + '%'}}</span>
-              <hr class="vertical_hr"/>
-              <div class="circle" :style="{backgroundColor: item.color}"/>
+              <hr class="vertical_hr" />
+              <span class="pie_value">{{ item.value + '%' }}</span>
+              <hr class="vertical_hr" />
+              <div class="circle" :style="{ backgroundColor: item.color }" />
             </div>
             <div class="chart_item_functions">
-              <img src="../../assets/icons/Edit.svg" alt="edit" class="img_edit"/>
-              <img src="../../assets/icons/Trash.svg" alt="delete" class="img_delete" style="margin-left: 20px"/>
+              <!-- Добавляем обработчик клика для иконки "Edit" -->
+              <img
+                  src="../../assets/icons/Edit.svg"
+                  alt="edit"
+                  class="img_edit"
+                  @click="handleEdit(item)"
+              />
+              <!-- Добавляем обработчик клика для иконки "Delete" -->
+              <img
+                  src="../../assets/icons/Trash.svg"
+                  alt="delete"
+                  class="img_delete"
+                  style="margin-left: 20px"
+                  @click="handleDelete(item.name)"
+              />
             </div>
           </li>
         </ul>
-        <button @click="showDialog">
-          Добавить сектор
-        </button>
+        <button @click="showDialog">Добавить сектор</button>
       </div>
       <canvas style="margin-left: 89px; width: 500px" id="myChart"></canvas>
     </div>

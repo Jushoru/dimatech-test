@@ -24,7 +24,7 @@ function onSubmit() {
   }
 
   let isUniq = chartStore.elements.every((chartItem) => {
-    return chartItem.name !== chartStore.name;
+    return chartItem.name !== chartStore.name || (chartStore.name === chartStore.originalName && chartStore.originalName !== '');
   });
 
   if (!isUniq) {
@@ -46,12 +46,25 @@ function onSubmit() {
     return;
   }
 
-  chartStore.elements.push({
-    name: chartStore.name,
-    value: value,
-    color: chartStore.pureColor
-  });
+  if (chartStore.originalName !== '') {
+    const index = chartStore.elements.findIndex((item) => item.name === chartStore.originalName)
+    chartStore.elements[index] = {
+      name: chartStore.name,
+      value: value,
+      color: chartStore.pureColor,
+    };
+  } else {
+    chartStore.elements.push({
+      name: chartStore.name,
+      value: value,
+      color: chartStore.pureColor
+    });
+  }
 
+  chartStore.originalName = ''
+  chartStore.name = ''
+  chartStore.value = ''
+  chartStore.pureColor = 'red'
   props.dialog.close();
 }
 </script>

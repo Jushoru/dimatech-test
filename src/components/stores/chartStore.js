@@ -2,6 +2,7 @@ import {defineStore} from "pinia";
 
 export const useChartStore = defineStore('chart',{
     state: () => {
+        const originalName = ''
         const name = ''
         const value = ''
         const pureColor = "red";
@@ -26,6 +27,7 @@ export const useChartStore = defineStore('chart',{
 
 
         return {
+            originalName,
             name,
             value,
             pureColor,
